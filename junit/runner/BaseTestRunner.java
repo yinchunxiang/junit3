@@ -108,6 +108,7 @@ public abstract class BaseTestRunner implements TestListener {
 		}
 		Test test= null;
 		try {
+			// Class[0]代表不需要参数
 			test= (Test)suiteMethod.invoke(null, new Class[0]); // static method
 			if (test == null)
 				return test;

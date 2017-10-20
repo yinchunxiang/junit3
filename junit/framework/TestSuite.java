@@ -118,6 +118,12 @@ public class TestSuite implements Test {
 	 * ...as the moon sets over the early morning Merlin, Oregon
 	 * mountains, our intrepid adventurers type...
 	 */
+
+	/**
+	 * @param theClass 测试类
+	 * @param name - 测试方法名称
+	 * @return
+	 */
 	static public Test createTest(Class theClass, String name) {
 		Constructor constructor;
 		try {
@@ -130,6 +136,7 @@ public class TestSuite implements Test {
 			if (constructor.getParameterTypes().length == 0) {
 				test= constructor.newInstance(new Object[0]);
 				if (test instanceof TestCase)
+					//@yincx: 将testCase的名称设置为方法名
 					((TestCase) test).setName(name);
 			} else {
 				test= constructor.newInstance(new Object[]{name});

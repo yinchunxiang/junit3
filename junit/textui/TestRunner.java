@@ -136,8 +136,9 @@ public class TestRunner extends BaseTestRunner {
 		TestRunner aTestRunner= new TestRunner();
 		try {
 			TestResult r= aTestRunner.start(args);
-			if (!r.wasSuccessful()) 
+			if (!r.wasSuccessful()) {
 				System.exit(FAILURE_EXIT);
+			}
 			System.exit(SUCCESS_EXIT);
 		} catch(Exception e) {
 			System.err.println(e.getMessage());
@@ -148,6 +149,11 @@ public class TestRunner extends BaseTestRunner {
 	/**
 	 * Starts a test run. Analyzes the command line arguments
 	 * and runs the given test suite.
+	 */
+
+	/**
+	 * @yincx: testCase的名字是从项目根目录开始的全路径，包括包名
+     *
 	 */
 	protected TestResult start(String args[]) throws Exception {
 		String testCase= "";

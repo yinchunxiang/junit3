@@ -11,16 +11,21 @@ import java.io.*;
  *
  * @see TestCollector
  */
+
+/**
+ * 考虑classPath上出了JAR之外的所有的类
+ */
 public abstract class ClassPathTestCollector implements TestCollector {
 	
 	static final int SUFFIX_LENGTH= ".class".length();
 	
 	public ClassPathTestCollector() {
 	}
-	
+
 	public Enumeration collectTests() {
 		String classPath= System.getProperty("java.class.path");
-		Hashtable result = collectFilesInPath(classPath);
+        System.out.println("class path => " + classPath);
+        Hashtable result = collectFilesInPath(classPath);
 		return result.elements();
 	}
 
@@ -32,8 +37,10 @@ public abstract class ClassPathTestCollector implements TestCollector {
 	Hashtable collectFilesInRoots(Vector roots) {
 		Hashtable result= new Hashtable(100);
 		Enumeration e= roots.elements();
-		while (e.hasMoreElements()) 
-			gatherFiles(new File((String)e.nextElement()), "", result);
+		while (e.hasMoreElements()) {
+            System.out.println("--> class root: " + e.nextElement());
+            gatherFiles(new File((String) e.nextElement()), "", result);
+        }
 		return result;
 	}
 
@@ -42,14 +49,17 @@ public abstract class ClassPathTestCollector implements TestCollector {
 		if (thisRoot.isFile()) {
 			if (isTestClass(classFileName)) {
 				String className= classNameFromFile(classFileName);
-				result.put(className, className);
+                System.out.println("~~~~~~> this root: " + thisRoot.getName());
+                result.put(className, className);
 			}
 			return;
-		}		
+		}
+		//列出目录下的文件和目录
 		String[] contents= thisRoot.list();
 		if (contents != null) { 
-			for (int i= 0; i < contents.length; i++) 
-				gatherFiles(classRoot, classFileName+File.separatorChar+contents[i], result);		
+			for (int i= 0; i < contents.length; i++) {
+                gatherFiles(classRoot, classFileName + File.separatorChar + contents[i], result);
+            }
 		}
 	}
 	
@@ -57,8 +67,9 @@ public abstract class ClassPathTestCollector implements TestCollector {
 		Vector result= new Vector();
 		String separator= System.getProperty("path.separator");
 		StringTokenizer tokenizer= new StringTokenizer(classPath, separator);
-		while (tokenizer.hasMoreTokens()) 
-			result.addElement(tokenizer.nextToken());
+		while (tokenizer.hasMoreTokens()) {
+            result.addElement(tokenizer.nextToken());
+        }
 		return result;
 	}
 	
